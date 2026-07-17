@@ -5,8 +5,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Intuition Labs — the foundry</title>
-<meta name="description" content="One mechanism, everywhere: a population of readings, an order parameter R, a gate, a verdict. The physics packages, the sheaf starter, and j-town — the live town.">
+<title>Intuition Labs — gates, receipts, and J-space objects in zero-dependency TypeScript</title>
+<meta name="description" content="One mechanism: many readings → one number R → a gate → a verdict, with a receipt. Browser-native, zero-dependency TypeScript. See it live in j-town, gate a real lens file, fork the sheaf starter, npm i @intuitionlabs.">
 <style>
   :root{ --bg:#0a0a0a; --hair:#333; --edge:#1a1a1a; --lab:#666; --dim:#888; --mid:#aaa; --hi:#ccc; --wt:#fff; --blue:#4a9eff;
          --mono:ui-monospace,'Cascadia Mono','Courier New',monospace; }
@@ -156,6 +156,18 @@
       <a class="enter" href="https://intuition-labs-llc.github.io/j-town/">ENTER J-TOWN →</a>
     </div>
 
+    <div class="card town reveal">
+      <div class="tbody">
+        <div class="name">lens-gate — prove it with your own file</div>
+        <div class="one">Drop one of Neuronpedia's pre-fitted Jacobian-lens files (or any
+          lens-shaped JSON) and get cone fits, Δ_μ between two layers, a verdict at a disclosed
+          tolerance, and a downloadable receipt — computed entirely in your tab. Nothing is
+          uploaded.</div>
+        <div class="pills"><span class="pill">zero requests</span><span class="pill">real lens files</span><span class="pill">receipts</span></div>
+      </div>
+      <a class="enter" href="./lens.html">DROP A LENS →</a>
+    </div>
+
     <div class="card reveal">
       <div class="name">core</div>
       <div class="one">The shared vocabulary: Vec, Receipt, Gated, the four R's, and the frozen constants every other package imports.</div>
@@ -238,6 +250,9 @@
     (<a href="https://transformer-circuits.pub/2026/workspace/index.html">Transformer Circuits, 2026</a>):
     store, gate, compare (Δ_μ), and translate residual readings anywhere. A companion to, not a competitor
     of, <a href="https://github.com/anthropics/jacobian-lens">jacobian-lens</a>.
+    Intuition Labs is independent and not affiliated with Anthropic; we externalize ideas from their
+    published paper (Gurnee, Sofroniew et&nbsp;al., Transformer Circuits 2026) and cite them — no code
+    was copied.
   </p>
   <p class="reveal">
     <b style="color:#aaa;font-weight:400">The applicability layer.</b> Gate with jspace; execute on

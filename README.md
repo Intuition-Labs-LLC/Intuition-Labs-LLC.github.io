@@ -7,6 +7,13 @@ zero external requests. Served at
 - `index.html` — the page (inline CSS + JS).
 - `sim.js` — the Kuramoto phase-field simulation core, shared by the page and the test.
 - `selftest.mjs` — headless proof of the physics: `node selftest.mjs`.
+- `lens.html` — the lens-gate: drop a Neuronpedia pre-fitted Jacobian-lens `.pt` (or any
+  lens-shaped JSON), get cone fits, Δ_μ, a verdict, and a downloadable receipt — computed
+  entirely in the tab, zero requests.
+- `lens-core.js` — the whole lens pipeline (zip walk, pickle subset, fp16, pursuit/Δ_μ, gate),
+  shared by the page and the test.
+- `selftest-lens.mjs` — headless proof of the lens pipeline, incl. bit-exact parity with the
+  jspace monorepo's pinned `examples/lens-gate` numbers when the sibling checkout is present.
 - `404.html` · `.nojekyll` · `LICENSE`.
 
 ## How the hero shader works, in five lines

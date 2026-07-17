@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!-- Copyright (c) 2026 Intuition Labs LLC -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lens-gate — drop a Jacobian lens, get a verdict with a receipt</title>
+<meta name="description" content="Drop a Neuronpedia pre-fitted Jacobian-lens .pt (or any lens-shaped JSON) and get cone fits, Δ_μ, a verdict, and a downloadable receipt — computed entirely in this tab. Zero requests, zero dependencies.">
+<style>
+  :root{ --bg:#0a0a0a; --hair:#333; --edge:#1a1a1a; --lab:#666; --dim:#888; --mid:#aaa; --hi:#ccc; --wt:#fff; --blue:#4a9eff; --rose:#ff6a8a;
+         --mono:ui-monospace,'Cascadia Mono','Courier New',monospace; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--bg); }
+  body{ color:var(--dim); font-family:var(--mono); font-weight:300; font-size:14px; line-height:1.6;
+        -webkit-font-smoothing:antialiased; }
+  a{ color:var(--mid); text-decoration:none; border-bottom:1px solid var(--hair); }
+  a:hover{ color:var(--wt); border-bottom-color:var(--lab); }
+  main{ max-width:860px; margin:0 auto; padding:48px 22px 24px; }
+  .slug{ color:var(--lab); font-size:12px; margin-bottom:28px; display:flex; justify-content:space-between; }
+  h1{ color:var(--hi); font-size:22px; font-weight:300; margin:0 0 10px; }
+  .lead{ color:var(--mid); max-width:70ch; margin:0 0 6px; }
+  .fineline{ color:var(--lab); font-size:12px; max-width:70ch; margin:0 0 26px; }
+  .drop{ border:1px dashed var(--hair); padding:38px 22px; text-align:center; color:var(--dim); cursor:pointer;
+         transition:border-color .2s ease,color .2s ease; margin-bottom:14px; }
+  .drop.hot,.drop:hover{ border-color:var(--lab); color:var(--hi); }
+  .drop input{ display:none; }
+  .row{ display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+  select,button.act{ font-family:var(--mono); font-weight:300; font-size:13px; color:var(--mid);
+         background:transparent; border:1px solid var(--hair); padding:5px 12px; cursor:pointer; }
+  select:hover,button.act:hover{ color:var(--wt); border-color:var(--lab); }
+  button.act[disabled]{ opacity:.4; cursor:default; }
+  .status{ color:var(--lab); font-size:12px; min-height:18px; margin-bottom:8px; }
+  .out{ display:none; border-top:1px solid var(--edge); padding-top:18px; margin-top:8px; }
+  .out.on{ display:block; }
+  .stat{ display:flex; gap:34px; flex-wrap:wrap; margin-bottom:16px; }
+  .stat b{ display:block; color:var(--wt); font-size:20px; font-weight:300; }
+  .stat span{ color:var(--lab); font-size:11px; }
+  .verdicts{ font-size:12px; line-height:1.9; max-height:180px; overflow:auto; border:1px solid var(--edge);
+             padding:8px 12px; margin-bottom:16px; }
+  .verdicts .c{ color:var(--blue); } .verdicts .e{ color:var(--rose); } .verdicts .s{ color:var(--lab); }
+  pre.receipt{ background:var(--edge); border:1px solid var(--hair); padding:12px; font-size:12px; overflow:auto;
+               white-space:pre-wrap; word-break:break-word; color:var(--mid); }
+  .honest{ border-left:2px solid var(--hair); padding:2px 0 2px 14px; color:var(--dim); font-size:13px; max-width:70ch; margin:26px 0; }
+  footer{ border-top:1px solid var(--edge); margin-top:34px; padding-top:14px; color:var(--lab); font-size:11.5px; max-width:76ch; }
+</style>
+</head>
+<body>
+<main>
+  <div class="slug"><span>intuition labs · lens-gate</span><span><a href="./index.html">← the foundry</a> · <a href="https://intuition-labs-llc.github.io/j-town/">j-town</a></span></div>
+
+  <h1>Drop a lens. Get a verdict, with a receipt.</h1>
+  <p class="lead">
+    Drop one of Neuronpedia's pre-fitted Jacobian-lens files
+    (<a href="https://huggingface.co/neuronpedia/jacobian-lens">huggingface.co/neuronpedia/jacobian-lens</a>,
+    the raw <code>*_jacobian_lens.pt</code>) — or any plain-JSON lens
+    <code>{d_model, vectors: number[][]}</code>. This page fits held-out lens directions into
+    sparse nonnegative cones, compares two layers with Δ_μ, gates each fit at a disclosed
+    tolerance, and hands you the receipt.
+  </p>
+  <p class="fineline">
+    Everything runs in this tab. No request leaves it — check the network panel. Same file, same
+    numbers, every time: the pipeline has no randomness anywhere.
+  </p>
+
+  <label class="drop" id="drop">
+    drop a <b>.pt</b> or <b>.json</b> lens here — or click to pick a file
+    <input type="file" id="file" accept=".pt,.json,application/json">
+  </label>
+
+  <div class="row" id="layerrow" style="display:none">
+    <span>compare cones of layer</span>
+    <select id="layerA" aria-label="layer A"></select>
+    <span>vs layer</span>
+    <select id="layerB" aria-label="layer B"></select>
+    <button class="act" id="run">RUN THE GATE</button>
+  </div>
+  <div class="status" id="status"></div>
+
+  <section class="out" id="out" aria-live="polite">
+    <div class="stat">
+      <div id="dmuwrap"><b id="dmu">—</b><span>Δ_μ between the two cones (k=3)</span></div>
+      <div><b id="commits">—</b><span>probes commit at tol 0.85</span></div>
+      <div><b id="escalates">—</b><span>probes escalate</span></div>
+    </div>
+    <div class="verdicts" id="verdicts"></div>
+    <div class="row">
+      <button class="act" id="copyReceipt">copy receipts</button>
+      <button class="act" id="dlReceipt">download receipts.json</button>
+    </div>
+    <pre class="receipt" id="receipt"></pre>
+  </section>
+
+  <div class="honest">
+    What this is not: this page does not run a model, does not fit lenses, and cannot tell you
+    what a lens direction <i>means</i>. It stores, fits, compares, and gates the objects other
+    tools produce. A high escalation rate is the honest reading — a k=3 nonnegative cone of 48
+    lens rows explains only a small slice of a held-out direction, and the gate says so instead
+    of pretending. The tolerance (0.85 relative residual) is page-local and printed on the
+    receipt it gates.
+  </div>
+
+  <footer>
+    Not affiliated with Anthropic or Neuronpedia. jspace externalizes ideas from Anthropic's
+    published paper (<a href="https://transformer-circuits.pub/2026/workspace/index.html">Gurnee,
+    Sofroniew et&nbsp;al., Transformer Circuits 2026</a>) and cites them; no code was copied. The
+    lens is their published work; the pre-fit files are Neuronpedia's (MIT). We build storage,
+    gates, and receipts under it. Pipeline source: <a href="./lens-core.js">lens-core.js</a> ·
+    the same run, pinned by falsifiers:
+    <a href="https://github.com/Intuition-Labs-LLC/jspace/tree/main/examples/lens-gate">jspace/examples/lens-gate</a>
+    · AGPL-3.0-or-later · © 2026 Intuition Labs LLC
+  </footer>
+</main>
+
+<script type="module">
+  import { parsePtLens, runTwoLayerGate, runJsonGate } from './lens-core.js';
+
+  const $ = (id) => document.getElementById(id);
+  const drop = $('drop'), file = $('file'), status = $('status'), out = $('out');
+  let lens = null, lensSha = null, lastReceipts = null;
+
+  async function sha256hex(bytes) {
+    if (!crypto.subtle) return null; // file:// in some browsers — degrade closed, receipt just omits the witness
+    const d = await crypto.subtle.digest('SHA-256', bytes);
+    return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function showResult(res, hasDmu) {
+    $('dmuwrap').style.display = hasDmu ? '' : 'none';
+    if (hasDmu) $('dmu').textContent = res.deltaMu.toFixed(6);
+    $('commits').textContent = `${res.commits}/${res.perProbe.length}`;
+    $('escalates').textContent = String(res.escalates);
+    $('verdicts').innerHTML = res.perProbe
+      .map((p) => `<span class="${p.verdict === 'commit' ? 'c' : p.verdict === 'skip' ? 's' : 'e'}">${p.probe} ρ=${p.rho.toFixed(4)} → ${p.verdict}</span>`)
+      .join('<br>');
+    lastReceipts = res.receipts;
+    $('receipt').textContent = JSON.stringify(res.receipts, null, 2);
+    out.classList.add('on');
+  }
+
+  async function handle(f) {
+    out.classList.remove('on');
+    $('layerrow').style.display = 'none';
+    status.textContent = `reading ${f.name} (${f.size.toLocaleString()} bytes)…`;
+    try {
+      const bytes = new Uint8Array(await f.arrayBuffer());
+      if (f.name.endsWith('.json')) {
+        const json = JSON.parse(new TextDecoder().decode(bytes));
+        status.textContent = `plain-JSON lens: ${json.vectors.length} vectors × ${json.vectors[0].length} dims. Gating held-out rows…`;
+        await new Promise((r) => setTimeout(r, 20));
+        showResult(runJsonGate(json), false);
+        status.textContent = 'done — computed in this tab, nothing was uploaded.';
+        return;
+      }
+      lens = parsePtLens(bytes);
+      lensSha = await sha256hex(bytes);
+      const [a, b] = [$('layerA'), $('layerB')];
+      a.innerHTML = b.innerHTML = lens.layers.map((l) => `<option>${l}</option>`).join('');
+      const mid = lens.layers[Math.floor(lens.layers.length / 3)], late = lens.layers[Math.floor((2 * lens.layers.length) / 3)];
+      a.value = String(mid); b.value = String(late);
+      $('layerrow').style.display = '';
+      status.textContent = `parsed: d_model ${lens.d_model}, layers ${lens.layers[0]}–${lens.layers[lens.layers.length - 1]}, fit on ${lens.n_prompts} prompts. Pick two layers and run.`;
+    } catch (err) {
+      status.textContent = `could not read that file: ${err.message}`;
+    }
+  }
+
+  $('run').addEventListener('click', async () => {
+    if (!lens) return;
+    $('run').disabled = true;
+    status.textContent = 'fitting cones — a few hundred pursuits, one moment…';
+    await new Promise((r) => setTimeout(r, 20));
+    try {
+      const res = runTwoLayerGate(lens, Number($('layerA').value), Number($('layerB').value), lensSha);
+      showResult(res, true);
+      status.textContent = 'done — computed in this tab, nothing was uploaded.';
+    } catch (err) {
+      status.textContent = `gate failed: ${err.message}`;
+    } finally {
+      $('run').disabled = false;
+    }
+  });
+
+  drop.addEventListener('click', () => file.click());
+  file.addEventListener('change', () => file.files[0] && handle(file.files[0]));
+  ['dragover', 'dragenter'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('hot'); }));
+  ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('hot'); }));
+  drop.addEventListener('drop', (e) => e.dataTransfer.files[0] && handle(e.dataTransfer.files[0]));
+
+  $('copyReceipt').addEventListener('click', () => lastReceipts && navigator.clipboard.writeText(JSON.stringify(lastReceipts, null, 2)));
+  $('dlReceipt').addEventListener('click', () => {
+    if (!lastReceipts) return;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(lastReceipts, null, 2)], { type: 'application/json' }));
+    a.download = 'lens-gate-receipts.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+</body>
+</html>
