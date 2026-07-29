@@ -1,0 +1,26 @@
+{
+  "name": "cuda-hip-rocm",
+  "version": "0.1.0+codex.20260729045016",
+  "description": "Selectable kernel translation work orders with evidence-bounded CUDA-to-HIP/ROC execution.",
+  "author": {
+    "name": "Intuition Labs LLC"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kernel Workbench: CUDA to HIP",
+    "shortDescription": "Plan, select, translate, compile, and validate source-kernel rewrites.",
+    "longDescription": "Defines strict semantic work orders, selectable publisher and runtime profiles, deterministic safe and leap-target trajectories, and an evidence-bounded CUDA-to-HIP implementation backed by the generated HIPIFY API mapping catalog. Translation, compilation, AMD execution, reference parity, and profiling remain distinct evidence classes.",
+    "developerName": "Intuition Labs LLC",
+    "category": "Developer",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Execute"
+    ],
+    "defaultPrompt": [
+      "Inventory this CUDA project and show the HIP/ROCm porting holds.",
+      "Port these CUDA kernels to a separate HIP C++ tree and run the real compile and AMD parity witness.",
+      "Create a kernel work order, select the Strix Halo runtime profile, and plan the safe path before optimizing."
+    ]
+  }
+}

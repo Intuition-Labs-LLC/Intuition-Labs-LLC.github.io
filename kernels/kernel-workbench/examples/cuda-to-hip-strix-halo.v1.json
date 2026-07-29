@@ -1,0 +1,30 @@
+{
+  "schema": "kernel-work-order/v1",
+  "work_order_id": "example.cuda-to-hip.strix-halo",
+  "translator_id": "cuda-to-hip",
+  "source": {
+    "language": "cuda-cpp",
+    "dialect": "cuda-12.9",
+    "root_ref": "plugin://skills/port-cuda-to-hip/assets/smoke",
+    "digest": "sha256:49b758f2b10691894fca4f63f94a2f54ca91c4c13c54b0ed7faec640c838a22d"
+  },
+  "target": {
+    "language": "hip-cpp",
+    "platform": "amd-rocm",
+    "architecture": "gfx1151",
+    "processor_plane": "gpu",
+    "memory_topology": "unified",
+    "execution_topology": "container"
+  },
+  "runtime_profile": null,
+  "trajectory": "safe_reachable",
+  "optimization_scopes": [
+    "portability",
+    "correctness"
+  ],
+  "evidence_available": [],
+  "pins": {
+    "registry_digest": null,
+    "catalog_digest": "sha256:cedff52f88730a45dc47bbcb8c53e5172ce340adcc8e2047bf67457d9ab17681"
+  }
+}

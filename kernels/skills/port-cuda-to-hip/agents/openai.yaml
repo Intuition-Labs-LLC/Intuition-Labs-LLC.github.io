@@ -1,0 +1,4 @@
+interface:
+  display_name: "CUDA to HIP for AMD ROCm"
+  short_description: "Map and port CUDA to validated HIP C++"
+  default_prompt: "Use $port-cuda-to-hip to inventory the CUDA APIs against the bundled HIPIFY mapping catalog, create an isolated HIP C++ candidate, and climb the real AMD validation ladder."

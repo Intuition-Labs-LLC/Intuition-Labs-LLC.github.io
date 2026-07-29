@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intuitionlabs.tech/schemas/kernel-work-order.v1.schema.json",
+  "title": "KernelWorkOrderV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "work_order_id",
+    "translator_id",
+    "source",
+    "target",
+    "runtime_profile",
+    "trajectory",
+    "optimization_scopes",
+    "evidence_available",
+    "pins"
+  ],
+  "properties": {
+    "schema": {
+      "const": "kernel-work-order/v1"
+    },
+    "work_order_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,95}$"
+    },
+    "translator_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]{0,63}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "dialect",
+        "root_ref",
+        "digest"
+      ],
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "dialect": {
+          "type": "string"
+        },
+        "root_ref": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "platform",
+        "architecture",
+        "processor_plane",
+        "memory_topology",
+        "execution_topology"
+      ],
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "architecture": {
+          "type": "string"
+        },
+        "processor_plane": {
+          "type": "string"
+        },
+        "memory_topology": {
+          "type": "string"
+        },
+        "execution_topology": {
+          "type": "string"
+        }
+      }
+    },
+    "runtime_profile": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "trajectory": {
+      "enum": [
+        "safe_reachable",
+        "leap_target"
+      ]
+    },
+    "optimization_scopes": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_available": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "pins": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry_digest",
+        "catalog_digest"
+      ],
+      "properties": {
+        "registry_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "catalog_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}
