@@ -14,9 +14,11 @@ zero external requests. Served at
   shared by the page and the test.
 - `selftest-lens.mjs` — headless proof of the lens pipeline, incl. bit-exact parity with the
   jspace monorepo's pinned `examples/lens-gate` numbers when the sibling checkout is present.
-- `kernels/` — the public Kernel Workbench source: strict work orders, the
-  deterministic planner, full generated HIPIFY API mapping object, isolated
-  CUDA-to-HIP tooling, tests, and the selectable Strix Halo toolbox adapter.
+- [`kernels/`](kernels/) — Kernel Workbench: a CUDA → HIP port is not done when
+  the file changes; it is done when it runs and matches. Public strict work
+  orders, deterministic planner, full generated HIPIFY mapping object, isolated
+  translation utilities, source checks, and the selectable Strix Halo toolbox
+  adapter. [Read the procedure](https://intuitionlabs.tech/kernels).
 - `404.html` · `.nojekyll` · `LICENSE`.
 
 ## How the hero shader works, in five lines
