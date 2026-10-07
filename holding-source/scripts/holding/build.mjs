@@ -18,7 +18,8 @@ const paths = [...new Set([...Object.keys(bundle.metafile.inputs), fontPath, 'sr
 const sources = [];
 for (const path of paths) sources.push({ path, sha256: sha(await readFile(resolve(root, path))) });
 const sourceDigest = sha(JSON.stringify({ version: 1, sources, script: sha(script), style: sha(style) }));
-const html = template.replace('__ARTIFACT__', sourceDigest).replace('__STYLE__', style).replace('__SCRIPT__', script);
+const html = template.replace('__ARTIFACT__', () => sourceDigest).replace('__STYLE__', () => style).replace('__SCRIPT__', () => script);
+if (html.match(/<script>([\s\S]*)<\/script>/)?.[1] !== script) throw new Error('script embedding differs from compiled bytes');
 const scriptHash = createHash('sha256').update(script).digest('base64');
 const csp = `default-src 'none'; script-src 'sha256-${scriptHash}'; style-src 'unsafe-inline'; font-src data:; connect-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'`;
 const config = { version: 3, routes: [

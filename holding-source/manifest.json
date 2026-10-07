@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source_digest": "5d007d0fadaf82cdb735d6fe540169b3660ec8e7ee108064771885cceb943103",
+  "source_digest": "e2271113a3508c4d1ca221126584d9bbeb035c5bb4691ef60a9ee605fea569f6",
   "sources": [
     {
       "path": "public/fonts/site/bricolage-grotesque-latin.woff2",
@@ -8,7 +8,7 @@
     },
     {
       "path": "scripts/holding/build.mjs",
-      "sha256": "83e5c57f06eac74118d9115b9281bb597dc841415a9cb6ecc521fc7c03ee6dc5"
+      "sha256": "820482d6d1ae3bda4e6ad8b198116c414a784895023a99d3653c247547384fa2"
     },
     {
       "path": "src/ds/fold/refractMap.js",
@@ -40,15 +40,15 @@
     },
     {
       "path": "src/holding/index.html",
-      "sha256": "a6ba3e167b63eb368c3fe3de6152fc9a195c6704a9aa3b932217e2ca02642f4c"
+      "sha256": "738dae841d6a6b1e70e74f46ffbac3eddec840480fa4a7beb1eb55ccd26180be"
     },
     {
       "path": "src/holding/runtime.js",
-      "sha256": "44468a39a9f87679ff8fabf92afef2c885b061c69998a27e6706f31152a193ab"
+      "sha256": "f7d45f41de6dc094f5145aefc53ee4ba00217231d35336484d8af49dc7b99c31"
     },
     {
       "path": "src/holding/seed.mjs",
-      "sha256": "1d7e7231a86e16a327be23f7a8b248c66bb255911a426c47c7cc8b83c46e6309"
+      "sha256": "36f0e3c3a3813dd35278c6d1790f21631580b036eda3ff3c408a4051f6f050cc"
     },
     {
       "path": "src/holding/style.css",
@@ -68,10 +68,10 @@
     }
   ],
   "artifact": {
-    "html_sha256": "bc1a327b824691ef0f26b9f71c45566acb90a960466ea28f16686b7fc3f70edb",
-    "config_sha256": "fd45c7d396edebcb2bb9087c4bb43dad7cda71bde223666b84b5e2376d148425",
-    "script_sha256": "db440e461dd001a1f05f0c7f4b95b7eafd694c8d121d6823d98db960126c02dd",
-    "html_bytes": 151927
+    "html_sha256": "f540c299ca265513999e772f41ade91bc702aafe7b08be58caf5b598cb7ebe65",
+    "config_sha256": "63c04a7dbbe99799ff92d2e7a569bb685535ef9d373e3e26212b6fc730c48afe",
+    "script_sha256": "0409df1cc8756f1ceb0ae7d84f6db9c1297bf99732c544acdf1eb736b6e57ab8",
+    "html_bytes": 152006
   },
   "primitive_owners": [
     "src/worlds/kernel/law.js",

@@ -10,7 +10,7 @@ export const VOCABULARY = Object.freeze([
 export const THEME = Object.freeze({ paper: '#faf9f5', ink: '#14211f', muted: '#526059', sage: '#cbd9c9', violet: '#ded0df' });
 export const MEDIUM = Object.freeze({
   secondMs: 1000, dayMs: 86400000, sampleSide: 72, contourSide: 64,
-  particleCapacity: 96, maxDpr: 1.5, drawEveryFrames: 3,
+  particleCapacity: 96, maxDpr: 1.5, maxPixels: 2097152, drawEveryFrames: 3,
   modeCapacity: 7, maxHarmonic: 4, edgeWidth: 1.3,
   cycleMs: CAGE_PERIOD_MS, transitionMs: DURATION_MS.settle,
   frameMs: FRAME_MS, maxStepSeconds: LIMEN.stepMax.v,
@@ -45,7 +45,7 @@ export function wordState(declared, elapsedMs) {
   const index = Math.floor(elapsed / dwell) % declared.vocabulary.length;
   const into = elapsed % dwell;
   const fade = Math.min(MEDIUM.transitionMs, dwell / 3);
-  const opacity = into < fade ? into / fade : into > dwell - fade ? (dwell - into) / fade : 1;
+  const opacity = elapsed < fade ? 1 : into < fade ? into / fade : into > dwell - fade ? (dwell - into) / fade : 1;
   return { index, word: declared.vocabulary[index], opacity: elapsed === 0 ? 1 : opacity };
 }
 

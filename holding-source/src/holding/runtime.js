@@ -32,9 +32,11 @@ for (let i = 0; i < openingSteps; i++) step(body, law, { t: i * fixedStep, dt: f
 
 function resize() {
   width = canvas.clientWidth; height = canvas.clientHeight;
-  field.resize(Math.min(devicePixelRatio || 1, MEDIUM.maxDpr));
+  field.resize(pixelRatio());
   draw();
 }
+
+function pixelRatio() { return Math.min(devicePixelRatio || 1, MEDIUM.maxDpr, Math.sqrt(MEDIUM.maxPixels / Math.max(1, width * height))); }
 
 function contours(terms, ink, alpha) {
   const n = MEDIUM.contourSide, values = new Float32Array((n + 1) ** 2);
@@ -66,7 +68,7 @@ function contours(terms, ink, alpha) {
 function draw() {
   const seconds = elapsed / MEDIUM.secondMs;
   const terms = termsAt(declared, seconds, law);
-  const dpr = Math.min(devicePixelRatio || 1, MEDIUM.maxDpr);
+  const dpr = pixelRatio();
   if (field.mode !== 'none' && width && height) {
     renderField(field, { terms, thick, n: MEDIUM.sampleSide, peak: declared.peak, flow: 0,
       palette, rect: { ox: 0, oy: 0, sw: width, sh: height }, viewport: { w: width, h: height }, dpr }, body.R);
@@ -128,6 +130,7 @@ const observer = new ResizeObserver(resize); observer.observe(canvas);
 addEventListener('pointermove', react, { passive: true }); addEventListener('pointerdown', touch, { passive: true });
 document.addEventListener('visibilitychange', visibility); motion.addEventListener('change', preference);
 pause.addEventListener('click', pauseMotion);
+pause.disabled = false;
 addEventListener('pagehide', (event) => { if (event.persisted) suspend(); else dispose(); });
 addEventListener('pageshow', (event) => { if (event.persisted) start(); });
 preference(); resize(); start();
