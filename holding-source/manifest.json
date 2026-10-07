@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "source_digest": "5d007d0fadaf82cdb735d6fe540169b3660ec8e7ee108064771885cceb943103",
+  "sources": [
+    {
+      "path": "public/fonts/site/bricolage-grotesque-latin.woff2",
+      "sha256": "a79fdb52d4a5c76552452f69202add96e287401fff03d3e8c0e38b4dcb5a99cd"
+    },
+    {
+      "path": "scripts/holding/build.mjs",
+      "sha256": "83e5c57f06eac74118d9115b9281bb597dc841415a9cb6ecc521fc7c03ee6dc5"
+    },
+    {
+      "path": "src/ds/fold/refractMap.js",
+      "sha256": "db898110d63eda652d89d27e2d24271c02d59c26767e40ec464b9c11dad4859f"
+    },
+    {
+      "path": "src/ds/limen.js",
+      "sha256": "c7cb7a544febc005219dd82e34c6a75f9add032e7f8d5c845618aa28fd203a31"
+    },
+    {
+      "path": "src/ds/optics.js",
+      "sha256": "240197f363df6cee1390507d6875a80af513ad57645412c016adad34645ca51a"
+    },
+    {
+      "path": "src/ds/spring.js",
+      "sha256": "ff565d78fe647f670437c53c81bf0ac1db7bec449e5e2f1245baea73389eec9b"
+    },
+    {
+      "path": "src/ds/universe.js",
+      "sha256": "73fb0285dde141d77a6637400ee29440051dcd1f288b911176a56d61200d9eb1"
+    },
+    {
+      "path": "src/gl/field.js",
+      "sha256": "0291db2567f944b57cd6cdd21db594ddc74f9f743957cbd7b7818eb0baf2dabf"
+    },
+    {
+      "path": "src/gl/shaders.js",
+      "sha256": "c8285dc3498ae06b56a2e6d39369c0ba088c736f4a386b3bc92836a8db243a78"
+    },
+    {
+      "path": "src/holding/index.html",
+      "sha256": "a6ba3e167b63eb368c3fe3de6152fc9a195c6704a9aa3b932217e2ca02642f4c"
+    },
+    {
+      "path": "src/holding/runtime.js",
+      "sha256": "44468a39a9f87679ff8fabf92afef2c885b061c69998a27e6706f31152a193ab"
+    },
+    {
+      "path": "src/holding/seed.mjs",
+      "sha256": "1d7e7231a86e16a327be23f7a8b248c66bb255911a426c47c7cc8b83c46e6309"
+    },
+    {
+      "path": "src/holding/style.css",
+      "sha256": "5cde7331052abfd0f7b3e953bdc9669c81242aa0b2c9e74716ddb8453a67add4"
+    },
+    {
+      "path": "src/holding/world.js",
+      "sha256": "abf96a2b4b1860a45dd73eccf2b7c51b47518260179d76ce90a49bf808487122"
+    },
+    {
+      "path": "src/worlds/kernel/law.js",
+      "sha256": "7f26de3a645c7110c8cfae05e1e98378e47caadb55a4bb094989fd1363bc6ceb"
+    },
+    {
+      "path": "src/worlds/kernel/septet.js",
+      "sha256": "3e9bae38ab0a622970dc4086c28066958935de2c001a73fc05058d55d0aa1ea1"
+    }
+  ],
+  "artifact": {
+    "html_sha256": "bc1a327b824691ef0f26b9f71c45566acb90a960466ea28f16686b7fc3f70edb",
+    "config_sha256": "fd45c7d396edebcb2bb9087c4bb43dad7cda71bde223666b84b5e2376d148425",
+    "script_sha256": "db440e461dd001a1f05f0c7f4b95b7eafd694c8d121d6823d98db960126c02dd",
+    "html_bytes": 151927
+  },
+  "primitive_owners": [
+    "src/worlds/kernel/law.js",
+    "src/worlds/kernel/septet.js",
+    "src/gl/field.js",
+    "src/ds/limen.js",
+    "src/ds/optics.js",
+    "src/ds/spring.js"
+  ],
+  "runtime_inputs": [
+    "explicit UTC-day and rotation snapshot from device clock",
+    "visible active elapsed time",
+    "viewport and device pixel ratio",
+    "transient pointer displacement",
+    "motion preference and pause"
+  ],
+  "network": "none; ordinary link to intuitionlabs.tech only",
+  "license": "First-party source. Preserve original source notices; AGPL-3.0-or-later where declared."
+}
